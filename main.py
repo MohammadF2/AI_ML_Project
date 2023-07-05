@@ -61,14 +61,14 @@ def printDistribution():
     for k, v in proportions.items():
         print(f'{k}: {v:.2f}%')
 
-def generate_decision_tree(model, data):
+def generate_decision_tree(model, data,file_name):
     dot_data = StringIO()
     feature_cols = ['NPG', 'PGL', 'DIA', 'TSF', 'INS', 'BMI', 'DPF', 'AGE']
     export_graphviz(model, out_file=dot_data,
                     filled=True, rounded=True,
                     special_characters=True, feature_names=feature_cols, class_names=['0', '1'])
     graph = pydotplus.graph_from_dot_data(dot_data.getvalue())
-    graph.write_png('diabetes.png')
+    graph.write_png(file_name)
     Image(graph.create_png())
 
 # print Statistics
@@ -92,4 +92,5 @@ print('Model 1 (30%): {percent:.2f}'.format(percent=getAccuracy(M1, features_tes
 print('Model 2 (50%): {percent:.2f}'.format(percent=getAccuracy(M2, features_test_M2, target_test_M2) * 100))
 
 # generate decision trees
-generate_decision_tree(M1, data)
+generate_decision_tree(M1, data, "decision for module 1.png")
+generate_decision_tree(M2, data, "decision for module 2.png")
