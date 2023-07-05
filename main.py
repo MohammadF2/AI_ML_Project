@@ -38,18 +38,18 @@ def get_model(features_train, target_train):
     return model
 
 
-def getAccuracy(model, features_test, target_test):
+def get_accuracy(model, features_test, target_test):
     target_pred = model.predict(features_test)
     return metrics.accuracy_score(target_test, target_pred)
 
 
-def printStatistics():
+def print_statistics():
     statistics = data.describe()
     statistics = statistics.loc[['mean', '50%', 'std', 'min', 'max'], :]
     print(statistics)
 
 
-def printDistribution():
+def print_distribution():
     target = data.Diabetic
     distribution = collections.Counter(target)
 
@@ -61,7 +61,8 @@ def printDistribution():
     for k, v in proportions.items():
         print(f'{k}: {v:.2f}%')
 
-def generate_decision_tree(model, data,file_name):
+
+def generate_decision_tree(model, file_name):
     dot_data = StringIO()
     feature_cols = ['NPG', 'PGL', 'DIA', 'TSF', 'INS', 'BMI', 'DPF', 'AGE']
     export_graphviz(model, out_file=dot_data,
@@ -71,13 +72,14 @@ def generate_decision_tree(model, data,file_name):
     graph.write_png(file_name)
     Image(graph.create_png())
 
+
 # print Statistics
 print("Statistics:")
-printStatistics()
+print_statistics()
 
 # print distribution
 print("\nDistribution for percent of Diabetic:")
-printDistribution()
+print_distribution()
 
 # split data:
 features_train_M1, features_test_M1, target_train_M1, target_test_M1 = get_train_test(0.3)
@@ -88,9 +90,9 @@ M2 = get_model(features_train_M2, target_train_M2)
 
 # accuracy of each model
 print("\naccuracy of each model:")
-print('Model 1 (30%): {percent:.2f}'.format(percent=getAccuracy(M1, features_test_M1, target_test_M1) * 100))
-print('Model 2 (50%): {percent:.2f}'.format(percent=getAccuracy(M2, features_test_M2, target_test_M2) * 100))
+print('Model 1 (30%): {percent:.2f}%'.format(percent=get_accuracy(M1, features_test_M1, target_test_M1) * 100))
+print('Model 2 (50%): {percent:.2f}%'.format(percent=get_accuracy(M2, features_test_M2, target_test_M2) * 100))
 
 # generate decision trees
-generate_decision_tree(M1, data, "decision for module 1.png")
-generate_decision_tree(M2, data, "decision for module 2.png")
+generate_decision_tree(M1, "decision for module 1.png")
+generate_decision_tree(M2, "decision for module 2.png")
