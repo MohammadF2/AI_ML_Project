@@ -31,6 +31,8 @@ def get_train_test(size):
 
 
 def get_model(features_train, target_train):
+
+    # it used CART algorithm to generate
     model = DecisionTreeClassifier()
 
     model = model.fit(features_train, target_train)
